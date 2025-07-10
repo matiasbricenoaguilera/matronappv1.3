@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "MatronApp",
+  "name": "MatronApp - Recetas Anticonceptivas",
+  "description": "Recetas anticonceptivas en 5 minutos con matronas certificadas",
   "icons": [
     {
       "src": "favicon.ico",
@@ -18,8 +19,12 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "start_url": "/",
+  "display": "browser",
+  "orientation": "portrait",
+  "theme_color": "#8B5CF6",
+  "background_color": "#ffffff",
+  "scope": "/",
+  "lang": "es",
+  "categories": ["health", "medical"]
 }

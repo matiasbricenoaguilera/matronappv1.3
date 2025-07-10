@@ -76,7 +76,7 @@ export const StatusIndicator: React.FC<StatusIndicatorProps> = ({
   showProgress = false,
   progress = 0
 }) => {
-  const { texto: statusText, color } = formatearEstadoPrescripcion(status);
+  const { color } = formatearEstadoPrescripcion(status);
   
   const progressSteps = {
     'enviada': 20,

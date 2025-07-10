@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
-import { AuthUser, LoginData, RegistroData, ApiResponse } from '../types';
+import { AuthUser, LoginData, RegistroData } from '../types';
 
 interface AuthState {
   user: AuthUser | null;

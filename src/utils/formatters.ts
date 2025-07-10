@@ -33,7 +33,7 @@ export const tiempoRelativo = (fecha: Date | string): string => {
 
 // Formatear número de teléfono para mostrar
 export const formatearTelefonoMostrar = (telefono: string): string => {
-  const telefonoLimpio = telefono.replace(/[\s\-\+]/g, '');
+  const telefonoLimpio = telefono.replace(/[\s\-+]/g, '');
   
   if (telefonoLimpio.startsWith('569')) {
     const numero = telefonoLimpio.slice(3);

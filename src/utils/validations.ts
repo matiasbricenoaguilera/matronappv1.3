@@ -3,7 +3,7 @@ import { z } from 'zod';
 // Validación RUT chileno
 export const validarRut = (rut: string): boolean => {
   // Limpiar el RUT de puntos y guión
-  const rutLimpio = rut.replace(/[.\-]/g, '');
+  const rutLimpio = rut.replace(/[.-]/g, '');
   
   if (rutLimpio.length < 8 || rutLimpio.length > 9) {
     return false;
@@ -34,7 +34,7 @@ export const validarRut = (rut: string): boolean => {
 
 // Formatear RUT con puntos y guión
 export const formatearRut = (rut: string): string => {
-  const rutLimpio = rut.replace(/[.\-]/g, '');
+  const rutLimpio = rut.replace(/[.-]/g, '');
   
   if (rutLimpio.length < 2) return rutLimpio;
   
@@ -49,14 +49,14 @@ export const formatearRut = (rut: string): string => {
 
 // Validación de teléfono chileno
 export const validarTelefono = (telefono: string): boolean => {
-  const telefonoLimpio = telefono.replace(/[\s\-\+]/g, '');
+  const telefonoLimpio = telefono.replace(/[\s\-+]/g, '');
   // Formato: +56 9 xxxx xxxx o 569xxxxxxxx
   return /^(\+?56)?9\d{8}$/.test(telefonoLimpio);
 };
 
 // Formatear teléfono
 export const formatearTelefono = (telefono: string): string => {
-  const telefonoLimpio = telefono.replace(/[\s\-\+]/g, '');
+  const telefonoLimpio = telefono.replace(/[\s\-+]/g, '');
   
   if (telefonoLimpio.startsWith('569')) {
     const numero = telefonoLimpio.slice(3);

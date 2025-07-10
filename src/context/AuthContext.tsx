@@ -104,6 +104,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           nombre: 'María José',
           apellido: 'González',
           email: loginData.email,
+          fechaRegistro: new Date('2024-01-15'),
           tipo: 'paciente',
           token: 'mock-jwt-token-123'
         };
@@ -116,7 +117,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           email: user.email,
           tipo: user.tipo
         }));
-        localStorage.setItem('matronapp_token', user.token);
+        localStorage.setItem('matronapp_token', user.token!);
         
         dispatch({ type: 'SET_USER', payload: user });
         return true;
@@ -127,6 +128,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           nombre: 'Patricia',
           apellido: 'Morales',
           email: loginData.email,
+          fechaRegistro: new Date('2024-01-10'),
           tipo: 'matrona',
           token: 'mock-jwt-token-matrona-123'
         };
@@ -138,7 +140,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           email: user.email,
           tipo: user.tipo
         }));
-        localStorage.setItem('matronapp_token', user.token);
+        localStorage.setItem('matronapp_token', user.token!);
         
         dispatch({ type: 'SET_USER', payload: user });
         return true;
@@ -166,6 +168,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         nombre: registerData.nombre,
         apellido: registerData.apellido,
         email: registerData.email,
+        fechaRegistro: new Date(),
         tipo: 'paciente',
         token: `mock-jwt-token-${Date.now()}`
       };
@@ -178,7 +181,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         email: user.email,
         tipo: user.tipo
       }));
-      localStorage.setItem('matronapp_token', user.token);
+      localStorage.setItem('matronapp_token', user.token!);
       
       dispatch({ type: 'SET_USER', payload: user });
       return true;

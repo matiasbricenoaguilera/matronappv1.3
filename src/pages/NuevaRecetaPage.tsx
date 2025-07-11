@@ -15,7 +15,7 @@ import {
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../components/ui/Toast';
 import { DashboardLayout } from '../components/layout/Layout';
-import { Card, CardHeader, CardBody } from '../components/ui/Card';
+import { Card, CardBody } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { formatearFecha, formatearPrecio } from '../utils/formatters';
 
@@ -34,7 +34,7 @@ export const NuevaRecetaPage: React.FC = () => {
   const { user } = useAuth();
   const { showToast } = useToast();
   const navigate = useNavigate();
-  const [tipoSolicitud, setTipoSolicitud] = useState<TipoSolicitud>(null);
+  const [tipoSolicitud] = useState<TipoSolicitud>(null);
   const [cargando, setCargando] = useState(false);
 
   // Datos simulados de receta anterior

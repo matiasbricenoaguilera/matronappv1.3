@@ -209,14 +209,14 @@ export const MultiStepCuestionarioForm: React.FC<MultiStepCuestionarioFormProps>
     return baseDefaults;
   };
 
-  const {
+    const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
     trigger,
     getValues
-    } = useForm<CuestionarioFormData>({
+  } = useForm<CuestionarioFormData>({
     resolver: zodResolver(cuestionarioCompletoSchema),
     mode: 'onChange',
     defaultValues: getDefaultValues()

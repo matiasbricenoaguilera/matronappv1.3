@@ -162,26 +162,22 @@ type CuestionarioFormData = z.infer<typeof cuestionarioCompletoSchema>;
 interface MultiStepCuestionarioFormProps {
   onSubmit: (data: CuestionarioMedico) => void | Promise<void>;
   isLoading?: boolean;
+  esRenovacion?: boolean;
+  recetaAnterior?: any;
 }
 
 export const MultiStepCuestionarioForm: React.FC<MultiStepCuestionarioFormProps> = ({ 
   onSubmit, 
-  isLoading = false 
+  isLoading = false,
+  esRenovacion = false,
+  recetaAnterior 
 }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
-    trigger,
-    getValues
-  } = useForm<CuestionarioFormData>({
-    resolver: zodResolver(cuestionarioCompletoSchema),
-    mode: 'onChange',
-    defaultValues: {
+  // Valores por defecto para renovación
+  const getDefaultValues = () => {
+    const baseDefaults = {
       usaAnticonceptivos: false,
       tieneAlergias: false,
       fuma: false,
@@ -198,7 +194,32 @@ export const MultiStepCuestionarioForm: React.FC<MultiStepCuestionarioFormProps>
       cicloRegular: false,
       embarazosAnteriores: 0,
       problemasFertilidad: false
+    };
+
+    if (esRenovacion && recetaAnterior) {
+      return {
+        ...baseDefaults,
+        usaAnticonceptivos: true,
+        marcaActual: recetaAnterior.anticonceptivo,
+        tiempoUso: "Más de 6 meses",
+        motivoCambio: "Renovación de receta"
+      };
     }
+
+    return baseDefaults;
+  };
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+    trigger,
+    getValues
+    } = useForm<CuestionarioFormData>({
+    resolver: zodResolver(cuestionarioCompletoSchema),
+    mode: 'onChange',
+    defaultValues: getDefaultValues()
   });
 
   const watchedValues = watch();

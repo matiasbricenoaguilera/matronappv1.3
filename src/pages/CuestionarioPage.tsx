@@ -17,6 +17,10 @@ export const CuestionarioPage: React.FC = () => {
   const [analysis, setAnalysis] = useState<MedicalAnalysis | null>(null);
   const [showResults, setShowResults] = useState(false);
 
+  // Datos de renovación si viene desde nueva receta
+  const esRenovacion = location.state?.renovacion;
+  const recetaAnterior = location.state?.recetaAnterior;
+  
   // Mensaje de bienvenida si viene del registro
   const successMessage = location.state?.message;
 
@@ -135,6 +139,30 @@ export const CuestionarioPage: React.FC = () => {
             </div>
           )}
 
+          {/* Mensaje de Renovación */}
+          {esRenovacion && recetaAnterior && (
+            <div className="mb-8 p-6 bg-blue-50 border border-blue-200 rounded-lg">
+              <div className="flex items-start">
+                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                  <CheckCircle className="w-5 h-5 text-blue-600" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-blue-900 mb-2">
+                    Renovación de Receta
+                  </h3>
+                  <p className="text-blue-800 mb-3">
+                    Estamos procesando la renovación de tu receta anterior: <strong>{recetaAnterior.anticonceptivo}</strong>
+                  </p>
+                  <div className="text-sm text-blue-700">
+                    <p>• Tus datos médicos anteriores han sido pre-cargados</p>
+                    <p>• Solo necesitas confirmar cambios en tu estado de salud</p>
+                    <p>• El proceso será más rápido que una evaluación inicial</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Progress Stepper */}
           <div className="mb-8">
             <StepperProgress 
@@ -150,6 +178,8 @@ export const CuestionarioPage: React.FC = () => {
               <MultiStepCuestionarioForm 
                 onSubmit={handleSubmit}
                 isLoading={isLoading}
+                esRenovacion={esRenovacion}
+                recetaAnterior={recetaAnterior}
               />
             </Card>
           ) : (

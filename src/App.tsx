@@ -14,6 +14,7 @@ import { PagoPage } from './pages/PagoPage';
 import { PagoExitosoPage } from './pages/PagoExitosoPage';
 import { MatronaPanelPage } from './pages/MatronaPanelPage';
 import { ConfiguracionPage } from './pages/ConfiguracionPage';
+import { NuevaRecetaPage } from './pages/NuevaRecetaPage';
 
 function App() {
   return (
@@ -81,7 +82,7 @@ function App() {
                 } />
                 <Route path="/nueva-receta" element={
                   <ProtectedRoute>
-                    <div>Nueva receta en construcción</div>
+                    <NuevaRecetaPage />
                   </ProtectedRoute>
                 } />
                 <Route path="/historial" element={

@@ -61,6 +61,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         id: Date.now(), // ID temporal
         nombre: data.nombre,
         apellido: data.apellido,
+        rut: data.rut,
         email: data.email,
         telefono: data.telefono,
         fechaRegistro: new Date(),
@@ -104,6 +105,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         id: foundUser.id,
         nombre: foundUser.nombre,
         apellido: foundUser.apellido,
+        rut: foundUser.rut,
         email: foundUser.email,
         telefono: foundUser.telefono,
         fechaRegistro: new Date(foundUser.fechaRegistro || Date.now()),

@@ -1,211 +1,203 @@
-# 🩺 MatronApp - MVP
+# MatronApp - Recetas Anticonceptivas en 5 Minutos
 
-Plataforma digital que conecta mujeres con matronas certificadas para obtener recetas anticonceptivas **en 5 minutos o menos** - ideal para cuando estás en la farmacia.
+## 🚀 Descripción
 
-## 🚀 Estado del Proyecto
+MatronApp es una plataforma digital revolucionaria que permite a las mujeres chilenas obtener sus recetas anticonceptivas en **5 minutos o menos**. Nuestra propuesta de valor se centra en la **INMEDIATEZ total**, ideal para mujeres que están en la farmacia y necesitan su receta YA, no en 24 horas.
 
-### ✅ **COMPLETADO - Fase 1 & 2**
+## ✨ Características Principales
 
-#### **Setup y Base Técnica**
-- ✅ React 18+ con TypeScript
-- ✅ Tailwind CSS configurado con colores personalizados
-- ✅ React Router v6 para navegación
-- ✅ React Hook Form + Zod para formularios
-- ✅ Lucide React para iconos
-- ✅ Axios para HTTP requests
-- ✅ Context API para estado global
+### Para Pacientes
+- **Registro rápido** con validación completa
+- **Cuestionario médico inteligente** con lógica condicional
+- **Pago seguro** con WebPay Plus integrado
+- **Dashboard personalizado** con seguimiento de solicitudes
+- **Recetas digitales** válidas por 30 días
+- **Tiempo de respuesta garantizado**: 5 minutos o menos
 
-#### **Tipos TypeScript Completos**
-- ✅ `User`, `RegistroData`, `LoginData`, `AuthUser`
-- ✅ `CuestionarioMedico`, `Prescription`, `Matrona`
-- ✅ `PaymentData`, `Payment`, `PaymentSummary`
-- ✅ `Comuna`, `Notification`, `ApiResponse`
+### Para Matronas
+- **Panel profesional** para revisar solicitudes
+- **Sistema de prioridades** (alta, media, baja)
+- **Generación automática de PDFs** con recetas profesionales
+- **Filtrado y búsqueda** de solicitudes
+- **Historial completo** de pacientes
+- **Firma digital** integrada
 
-#### **Componentes UI Base (8 componentes)**
-- ✅ `Button` - 3 variantes, 3 tamaños, loading state
-- ✅ `Input` - Con validaciones, iconos, show/hide password
-- ✅ `Card` - Flexible con header, body, footer
-- ✅ `Modal` - Con overlay, escape, tamaños
-- ✅ `RutInput` - Validación y formato automático RUT chileno
-- ✅ `ComunaSelect` - Dropdown con comunas chilenas agrupadas
-- ✅ `StepperProgress` - Indicador de progreso por pasos
-- ✅ `StatusBadge` - Badges de estado con colores
+## 🛠 Tecnologías Utilizadas
 
-#### **Validaciones Robustas**
-- ✅ Algoritmo validación RUT chileno completo
-- ✅ Validación teléfono formato chileno (+56 9)
-- ✅ Esquemas Zod para formularios
-- ✅ Formateo automático de datos
+- **Frontend**: React 18 + TypeScript
+- **Styling**: Tailwind CSS
+- **Routing**: React Router 6
+- **Icons**: Lucide React
+- **PDF Generation**: jsPDF
+- **Build Tool**: Create React App
+- **Package Manager**: npm
 
-#### **Utilidades Completas**
-- ✅ Formateo de fechas en español
-- ✅ Formateo de precios en pesos chilenos
-- ✅ Formateo de estados con colores
-- ✅ Generación de números de receta
-- ✅ Cálculo de edad y validaciones
+## 📋 Requisitos
 
-#### **Context API**
-- ✅ `AuthContext` - Autenticación con localStorage
-- ✅ `AppContext` - Estado global de la aplicación
+- Node.js >= 14.0.0
+- npm >= 6.0.0
 
-#### **Layout System**
-- ✅ `Header` - Navegación responsive con transparencia
-- ✅ `Footer` - Completo con links legales y contacto
-- ✅ `Layout` - Sistema flexible para diferentes páginas
-- ✅ `AuthLayout`, `DashboardLayout`, `PageLayout`
+## 🚀 Instalación
 
-#### **Landing Page Conversion-Optimizada**
-- ✅ Hero section con gradiente rosa-azul
-- ✅ Comparación precio: $4.990 vs $25.000
-- ✅ Testimonios reales simulados
-- ✅ FAQ section interactiva
-- ✅ CTA "Obtener Mi Receta Ahora"
-- ✅ Sección "¿Cómo funciona?" con 4 pasos
-- ✅ Responsive mobile-first
-- ✅ Animaciones sutiles CSS
-
-#### **Datos Mock Realistas**
-- ✅ Usuarios y matronas de ejemplo
-- ✅ 40+ comunas chilenas organizadas
-- ✅ Testimonios con ratings
-- ✅ Prescripciones de ejemplo
-
-## 🎨 **Diseño Visual**
-
-### **Paleta de Colores**
-- **Primary**: `#E91E63` (Rosa principal)
-- **Primary Dark**: `#C2185B`
-- **Secondary**: `#00BCD4` (Azul secundario)
-- **Success**: `#4CAF50`
-- **Warning**: `#FF9800`
-- **Error**: `#F44336`
-
-### **Tipografía**
-- **Font**: Inter (Google Fonts)
-- **Weights**: 400, 500, 600, 700
-
-## 📱 **Funcionalidades MVP**
-
-### **Landing Page**
-- [x] Hero conversion-optimizada
-- [x] Comparación de precios
-- [x] Testimonios de usuarias
-- [x] FAQ interactivas
-- [x] CTAs estratégicos
-
-### **Próximas Fases**
-
-#### **📝 Fase 3 - Autenticación (Siguiente)**
-- [ ] Formulario de registro completo
-- [ ] Formulario de login
-- [ ] Validación de email único
-- [ ] Protección de rutas privadas
-- [ ] Recuperación de contraseña
-
-#### **📋 Fase 4 - Cuestionario Médico**
-- [ ] Formulario multi-step
-- [ ] Lógica condicional (ej: si fuma → cantidad)
-- [ ] Validación por pasos
-- [ ] Guardado de progreso
-- [ ] Navegación hacia atrás
-
-#### **💳 Fase 5 - Sistema de Pago**
-- [ ] Integración WebPay simulada
-- [ ] Resumen de pedido
-- [ ] Confirmación de pago
-- [ ] Estados: pendiente, procesando, completado
-
-#### **📊 Fase 6 - Dashboard Usuario**
-- [ ] Estado de solicitudes en tiempo real
-- [ ] Timeline de progreso
-- [ ] Información de matrona asignada
-- [ ] Descarga de recetas PDF
-- [ ] Historial completo
-
-#### **👩‍⚕️ Fase 7 - Panel Matrona**
-- [ ] Login independiente para matronas
-- [ ] Lista de solicitudes pendientes
-- [ ] Revisar cuestionarios médicos
-- [ ] Aprobar/rechazar con comentarios
-- [ ] Generar recetas PDF
-
-## 🚀 **Ejecutar el Proyecto**
-
+1. **Clonar el repositorio**
 ```bash
-# Clonar el repositorio
+git clone https://github.com/tu-usuario/matronapp.git
 cd matronapp
+```
 
-# Instalar dependencias
+2. **Instalar dependencias**
+```bash
 npm install
+```
 
-# Ejecutar en desarrollo
+3. **Iniciar el servidor de desarrollo**
+```bash
 npm start
 ```
 
-La aplicación estará disponible en `http://localhost:3000`
+4. **Abrir en el navegador**
+```
+http://localhost:3000
+```
 
-## 📁 **Estructura del Proyecto**
+## 🏗 Estructura del Proyecto
 
 ```
 src/
 ├── components/
-│   ├── ui/              # Componentes base (8 componentes)
-│   ├── forms/           # Formularios específicos (próxima fase)
-│   └── layout/          # Header, Footer, Layout
-├── pages/               # LandingPage (más páginas próximas)
-├── hooks/               # Custom hooks (próxima fase)
-├── services/            # API services (próxima fase)
-├── types/               # Tipos TypeScript completos
-├── utils/               # Validaciones y formatters
-├── context/             # AuthContext, AppContext
-└── data/                # Mock data realista
+│   ├── auth/                 # Componentes de autenticación
+│   ├── layout/              # Layouts y componentes de diseño
+│   └── ui/                  # Componentes UI reutilizables
+├── contexts/                # Context providers
+├── pages/                   # Páginas de la aplicación
+├── types/                   # Definiciones de tipos TypeScript
+├── utils/                   # Utilidades y helpers
+└── App.tsx                  # Componente principal
 ```
 
-## 🔐 **Usuarios de Prueba**
+## 📱 Páginas Principales
 
-### **Paciente**
+### Usuarios (Pacientes)
+- **Landing Page** (`/`) - Página de inicio con información del servicio
+- **Registro** (`/registro`) - Formulario de registro de usuarios
+- **Login** (`/login`) - Inicio de sesión
+- **Cuestionario** (`/cuestionario`) - Cuestionario médico multi-step
+- **Pago** (`/pago`) - Proceso de pago con WebPay
+- **Dashboard** (`/dashboard`) - Panel de usuario con solicitudes
+
+### Matronas
+- **Panel de Matrona** (`/matrona/dashboard`) - Dashboard profesional
+- **Solicitudes** (`/matrona/solicitudes`) - Gestión de solicitudes
+
+## 🔐 Autenticación
+
+### Usuarios de Prueba
+
+**Paciente:**
 - Email: `maria@email.com`
-- Password: `password123`
+- Contraseña: `password123`
 
-### **Matrona**
+**Matrona:**
 - Email: `patricia.morales@matronapp.cl`
-- Password: `matrona123`
+- Contraseña: `matrona123`
 
-## 🎯 **Métricas de Conversión Objetivo**
+## 🎯 Flujo de Usuario
 
-- **Landing → Registro**: >15%
-- **Registro → Cuestionario Completo**: >80%
-- **Cuestionario → Pago**: >70%
-- **Tiempo Promedio Receta**: <5 minutos
-- **Satisfacción Usuario**: >4.5/5
+1. **Registro/Login** - El usuario se registra o inicia sesión
+2. **Cuestionario Médico** - Completa un cuestionario de 5 pasos
+3. **Recomendación** - Recibe recomendación de anticonceptivo
+4. **Pago** - Realiza el pago de $4.990 CLP
+5. **Dashboard** - Puede ver el estado de sus solicitudes
+6. **Revisión por Matrona** - Una matrona revisa y aprueba la solicitud
+7. **Receta Digital** - Recibe la receta en formato PDF
 
-## 📝 **Próximos Pasos Inmediatos**
+## 📊 Características Técnicas
 
-1. **Crear formulario de registro** con validaciones completas
-2. **Implementar sistema de login** con manejo de errores
-3. **Proteger rutas privadas** con guards
-4. **Crear cuestionario médico** multi-step
-5. **Implementar dashboard** con estados en tiempo real
+### Componentes UI
+- **Button** - Botón reutilizable con variantes
+- **Input** - Campo de entrada con validación
+- **Card** - Tarjeta con header y body
+- **StatusBadge** - Indicador de estado
+- **StepperProgress** - Progreso de pasos
 
-## 🔧 **Tecnologías Usadas**
+### Utilidades
+- **Formatters** - Formateo de fechas, precios, RUT, teléfonos
+- **PDF Generator** - Generación de recetas en PDF
+- **Validators** - Validación de formularios
 
-- **Frontend**: React 18, TypeScript, Tailwind CSS
-- **Routing**: React Router v6
-- **Forms**: React Hook Form + Zod
-- **State**: Context API + useReducer
-- **Icons**: Lucide React
-- **HTTP**: Axios
-- **Dates**: date-fns
-- **Build**: Create React App
+### Contextos
+- **AuthContext** - Gestión de autenticación
+- **AppContext** - Estado global de la aplicación
 
-## 💡 **Notas de Desarrollo**
+## 🔧 Scripts Disponibles
 
-- **Mobile-First**: Diseñado para móviles primero
-- **TypeScript Strict**: Tipado estricto en toda la aplicación
-- **Validaciones Client-Side**: Validación robusta en el frontend
-- **Datos Mock**: Simulación realista para el MVP
-- **Responsive**: Breakpoints: 640px, 1024px, 1280px
+```bash
+# Desarrollo
+npm start
+
+# Construcción para producción
+npm run build
+
+# Ejecutar tests
+npm test
+
+# Análisis de bundle
+npm run analyze
+```
+
+## 🎨 Diseño y UX
+
+- **Diseño responsive** optimizado para mobile y desktop
+- **Paleta de colores médica** (azul y verde)
+- **Tipografía clara** y legible
+- **Micro-interacciones** para mejorar la experiencia
+- **Loading states** y feedback visual
+- **Validación en tiempo real** de formularios
+
+## 🔒 Seguridad
+
+- **Validación de entrada** en frontend y backend simulado
+- **Autenticación con tokens** JWT simulados
+- **Protección de rutas** privadas
+- **Validación de RUT** chileno
+- **Sanitización de datos** de entrada
+
+## 📈 Futuras Mejoras
+
+- [ ] Integración con APIs reales
+- [ ] Notificaciones push
+- [ ] Chat en tiempo real con matronas
+- [ ] Integración con farmacias
+- [ ] App móvil nativa
+- [ ] Telemedicina con video llamadas
+- [ ] Recordatorios automáticos
+- [ ] Integración con sistema de salud
+
+## 🤝 Contribución
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/nueva-funcionalidad`)
+3. Commit tus cambios (`git commit -m 'Añadir nueva funcionalidad'`)
+4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
+5. Abre un Pull Request
+
+## 📄 Licencia
+
+Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
+
+## 👥 Equipo
+
+- **Desarrollo Frontend**: React + TypeScript
+- **Diseño UX/UI**: Tailwind CSS
+- **Arquitectura**: Componentes reutilizables
+- **Testing**: Jest + React Testing Library
+
+## 📞 Contacto
+
+- **Email**: contacto@matronapp.cl
+- **Teléfono**: +56 2 2345 6789
+- **Sitio Web**: https://matronapp.cl
 
 ---
 
-**🩺 MatronApp - Conectando mujeres con matronas certificadas**
+**MatronApp** - Revolucionando el acceso a anticonceptivos en Chile 🇨🇱

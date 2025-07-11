@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RegistroForm } from '../components/forms/RegistroForm';
 import { Card } from '../components/ui/Card';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../context/AuthContext';
 import { RegistroData } from '../types';
 
 export const RegistroPage: React.FC = () => {
@@ -34,13 +34,17 @@ export const RegistroPage: React.FC = () => {
       };
 
       // Intentar registrar usuario
-      await register(registroData);
+      const success = await register(registroData);
       
-      // Redirigir al cuestionario médico
-      navigate('/cuestionario', { 
-        replace: true,
-        state: { message: '¡Cuenta creada exitosamente! Ahora completa tu perfil médico.' }
-      });
+      if (success) {
+        // Redirigir al cuestionario médico
+        navigate('/cuestionario', { 
+          replace: true,
+          state: { message: '¡Cuenta creada exitosamente! Ahora completa tu perfil médico.' }
+        });
+      } else {
+        setError('Error al crear la cuenta. Inténtalo nuevamente.');
+      }
       
     } catch (err: any) {
       setError(err.message || 'Error al crear la cuenta. Inténtalo nuevamente.');

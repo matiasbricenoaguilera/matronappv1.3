@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LoginForm } from '../components/forms/LoginForm';
 import { Card } from '../components/ui/Card';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../context/AuthContext';
 import { LoginData } from '../types';
 
 export const LoginPage: React.FC = () => {
@@ -16,10 +16,14 @@ export const LoginPage: React.FC = () => {
     setError(null);
 
     try {
-      await login(data);
+      const success = await login(data);
       
-      // Redirigir al dashboard o página principal
-      navigate('/dashboard', { replace: true });
+      if (success) {
+        // Redirigir al dashboard o página principal
+        navigate('/dashboard', { replace: true });
+      } else {
+        setError('Email o contraseña incorrectos');
+      }
       
     } catch (err: any) {
       setError(err.message || 'Error al iniciar sesión. Verifica tus credenciales.');

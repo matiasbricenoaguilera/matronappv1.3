@@ -41,6 +41,7 @@ export interface AuthUser {
   id: number;
   nombre: string;
   apellido: string;
+  rut: string;
   email: string;
   telefono?: string;
   fechaRegistro: Date;

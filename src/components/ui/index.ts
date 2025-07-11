@@ -5,7 +5,7 @@ export { default as Modal, ModalFooter, ConfirmModal } from './Modal';
 export { default as RutInput } from './RutInput';
 export { default as ComunaSelect } from './ComunaSelect';
 export { default as StepperProgress } from './StepperProgress';
-export { default as StatusBadge, StatusIndicator } from './StatusBadge';
+export { default as StatusBadge } from './StatusBadge';
 
 export * from './Button';
 export * from './Input';

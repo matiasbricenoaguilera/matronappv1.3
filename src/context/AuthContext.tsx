@@ -11,6 +11,7 @@ interface AuthState {
 type AuthAction =
   | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'SET_USER'; payload: AuthUser }
+  | { type: 'UPDATE_USER'; payload: AuthUser }
   | { type: 'SET_ERROR'; payload: string }
   | { type: 'CLEAR_ERROR' }
   | { type: 'LOGOUT' };
@@ -20,6 +21,7 @@ interface AuthContextType extends AuthState {
   register: (data: RegistroData) => Promise<boolean>;
   logout: () => void;
   clearError: () => void;
+  actualizarPerfil: (user: AuthUser) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -35,6 +37,13 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
         user: action.payload,
         isAuthenticated: true,
         loading: false,
+        error: null
+      };
+    
+    case 'UPDATE_USER':
+      return {
+        ...state,
+        user: action.payload,
         error: null
       };
     
@@ -103,6 +112,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           id: 1,
           nombre: 'María José',
           apellido: 'González',
+          rut: '12345678-9',
           email: loginData.email,
           fechaRegistro: new Date('2024-01-15'),
           tipo: 'paciente',
@@ -127,6 +137,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           id: 100,
           nombre: 'Patricia',
           apellido: 'Morales',
+          rut: '98765432-1',
           email: loginData.email,
           fechaRegistro: new Date('2024-01-10'),
           tipo: 'matrona',
@@ -167,6 +178,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         id: Date.now(), // ID temporal
         nombre: registerData.nombre,
         apellido: registerData.apellido,
+        rut: registerData.rut,
         email: registerData.email,
         fechaRegistro: new Date(),
         tipo: 'paciente',
@@ -201,12 +213,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     dispatch({ type: 'CLEAR_ERROR' });
   };
 
+  const actualizarPerfil = (user: AuthUser) => {
+    // Actualizar en localStorage
+    localStorage.setItem('matronapp_user', JSON.stringify({
+      id: user.id,
+      nombre: user.nombre,
+      apellido: user.apellido,
+      email: user.email,
+      tipo: user.tipo
+    }));
+    
+    dispatch({ type: 'UPDATE_USER', payload: user });
+  };
+
   const value: AuthContextType = {
     ...state,
     login,
     register,
     logout,
-    clearError
+    clearError,
+    actualizarPerfil
   };
 
   return (

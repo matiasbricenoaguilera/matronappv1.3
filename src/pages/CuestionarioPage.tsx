@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { CuestionarioMedicoForm } from '../components/forms/CuestionarioMedicoForm';
+import { MultiStepCuestionarioForm } from '../components/forms/MultiStepCuestionarioForm';
 import { StepperProgress } from '../components/ui/StepperProgress';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../context/AuthContext';
 import { CuestionarioMedico } from '../types';
 import { analizarCuestionarioMedico, MedicalAnalysis } from '../utils/medicalRecommendations';
 import { CheckCircle, AlertTriangle, Clock, Heart, ArrowRight, User } from 'lucide-react';
@@ -147,7 +147,7 @@ export const CuestionarioPage: React.FC = () => {
           {!showResults ? (
             /* Cuestionario Form */
             <Card className="p-8">
-              <CuestionarioMedicoForm 
+              <MultiStepCuestionarioForm 
                 onSubmit={handleSubmit}
                 isLoading={isLoading}
               />

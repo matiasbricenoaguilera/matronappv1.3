@@ -1,103 +1,199 @@
-import { format, formatDistance, parseISO } from 'date-fns';
+import { format, formatDistanceToNow, isToday, isYesterday } from 'date-fns';
 import { es } from 'date-fns/locale';
 
-// Formatear precio en pesos chilenos
+/**
+ * Formatea un precio en pesos chilenos
+ */
 export const formatearPrecio = (precio: number): string => {
   return new Intl.NumberFormat('es-CL', {
     style: 'currency',
     currency: 'CLP',
-    minimumFractionDigits: 0
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
   }).format(precio);
 };
 
-// Formatear fecha en formato legible
-export const formatearFecha = (fecha: Date | string): string => {
-  const fechaObj = typeof fecha === 'string' ? parseISO(fecha) : fecha;
-  return format(fechaObj, "d 'de' MMMM 'de' yyyy", { locale: es });
+/**
+ * Formatea una fecha de forma legible
+ */
+export const formatearFecha = (fecha: Date): string => {
+  if (isToday(fecha)) {
+    return `Hoy ${format(fecha, 'HH:mm', { locale: es })}`;
+  }
+  
+  if (isYesterday(fecha)) {
+    return `Ayer ${format(fecha, 'HH:mm', { locale: es })}`;
+  }
+  
+  return format(fecha, 'dd MMM yyyy', { locale: es });
 };
 
-// Formatear fecha con hora
-export const formatearFechaConHora = (fecha: Date | string): string => {
-  const fechaObj = typeof fecha === 'string' ? parseISO(fecha) : fecha;
-  return format(fechaObj, "d 'de' MMMM 'de' yyyy 'a las' HH:mm", { locale: es });
+/**
+ * Formatea una fecha completa
+ */
+export const formatearFechaCompleta = (fecha: Date): string => {
+  return format(fecha, 'dd MMMM yyyy', { locale: es });
 };
 
-// Tiempo relativo (hace 2 horas, etc.)
-export const tiempoRelativo = (fecha: Date | string): string => {
-  const fechaObj = typeof fecha === 'string' ? parseISO(fecha) : fecha;
-  return formatDistance(fechaObj, new Date(), { 
-    addSuffix: true, 
+/**
+ * Formatea tiempo transcurrido desde una fecha
+ */
+export const formatearTiempoTranscurrido = (fecha: Date): string => {
+  return formatDistanceToNow(fecha, { 
+    addSuffix: true,
     locale: es 
   });
 };
 
-// Formatear número de teléfono para mostrar
-export const formatearTelefonoMostrar = (telefono: string): string => {
-  const telefonoLimpio = telefono.replace(/[\s\-+]/g, '');
+/**
+ * Formatea un RUT chileno
+ */
+export const formatearRut = (rut: string): string => {
+  // Eliminar puntos y guiones
+  const cleanRut = rut.replace(/[.-]/g, '');
   
-  if (telefonoLimpio.startsWith('569')) {
-    const numero = telefonoLimpio.slice(3);
-    return `+56 9 ${numero.slice(0, 4)} ${numero.slice(4)}`;
+  // Agregar puntos y guión
+  const rutBody = cleanRut.slice(0, -1);
+  const rutDv = cleanRut.slice(-1);
+  
+  // Agregar puntos cada 3 dígitos
+  const formattedBody = rutBody.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+  
+  return `${formattedBody}-${rutDv}`;
+};
+
+/**
+ * Formatea un número de teléfono chileno
+ */
+export const formatearTelefono = (telefono: string): string => {
+  // Eliminar espacios y caracteres especiales
+  const cleanPhone = telefono.replace(/[\s\-()]/g, '');
+  
+  // Formato típico chileno: +56 9 XXXX XXXX
+  if (cleanPhone.startsWith('+56')) {
+    const number = cleanPhone.substring(3);
+    if (number.length === 9) {
+      return `+56 ${number.substring(0, 1)} ${number.substring(1, 5)} ${number.substring(5)}`;
+    }
   }
   
-  return telefono;
+  // Si no tiene formato internacional, asumimos que es nacional
+  if (cleanPhone.length === 9) {
+    return `+56 ${cleanPhone.substring(0, 1)} ${cleanPhone.substring(1, 5)} ${cleanPhone.substring(5)}`;
+  }
+  
+  return telefono; // Retornar original si no coincide con formatos esperados
 };
 
-// Capitalizar primera letra
-export const capitalizar = (texto: string): string => {
-  return texto.charAt(0).toUpperCase() + texto.slice(1).toLowerCase();
+/**
+ * Formatea el nombre completo
+ */
+export const formatearNombreCompleto = (nombre: string, apellido: string): string => {
+  return `${nombre} ${apellido}`;
 };
 
-// Obtener iniciales del nombre
-export const obtenerIniciales = (nombre: string, apellido: string): string => {
-  return `${nombre.charAt(0).toUpperCase()}${apellido.charAt(0).toUpperCase()}`;
-};
-
-// Formatear estado de prescripción para mostrar
+/**
+ * Formatea el estado de una prescripción
+ */
 export const formatearEstadoPrescripcion = (estado: string): { texto: string; color: string } => {
-  const estados = {
-    'enviada': { texto: 'Enviada', color: 'text-blue-600 bg-blue-100' },
-    'asignada': { texto: 'Asignada', color: 'text-yellow-600 bg-yellow-100' },
-    'en_revision': { texto: 'En Revisión', color: 'text-orange-600 bg-orange-100' },
-    'aprobada': { texto: 'Aprobada', color: 'text-green-600 bg-green-100' },
-    'rechazada': { texto: 'Rechazada', color: 'text-red-600 bg-red-100' }
-  };
-  
-  return estados[estado as keyof typeof estados] || { texto: estado, color: 'text-gray-600 bg-gray-100' };
+  switch (estado) {
+    case 'enviada':
+      return { texto: 'Enviada', color: 'bg-blue-100 text-blue-800' };
+    case 'asignada':
+      return { texto: 'Asignada', color: 'bg-purple-100 text-purple-800' };
+    case 'en_revision':
+      return { texto: 'En Revisión', color: 'bg-yellow-100 text-yellow-800' };
+    case 'aprobada':
+      return { texto: 'Aprobada', color: 'bg-green-100 text-green-800' };
+    case 'rechazada':
+      return { texto: 'Rechazada', color: 'bg-red-100 text-red-800' };
+    case 'completada':
+      return { texto: 'Completada', color: 'bg-green-100 text-green-800' };
+    default:
+      return { texto: 'Pendiente', color: 'bg-gray-100 text-gray-800' };
+  }
 };
 
-// Generar número de receta
-export const generarNumeroReceta = (id: number): string => {
-  const fecha = new Date();
-  const año = fecha.getFullYear();
-  const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
-  const idFormateado = id.toString().padStart(4, '0');
-  
-  return `REC-${año}${mes}-${idFormateado}`;
+/**
+ * Formatea un número con separadores de miles
+ */
+export const formatearNumero = (numero: number): string => {
+  return new Intl.NumberFormat('es-CL').format(numero);
 };
 
-// Validar edad mínima
-export const calcularEdad = (fechaNacimiento: Date): number => {
-  const hoy = new Date();
-  let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
-  const mesActual = hoy.getMonth();
-  const mesNacimiento = fechaNacimiento.getMonth();
-  
-  if (mesNacimiento > mesActual || (mesNacimiento === mesActual && fechaNacimiento.getDate() > hoy.getDate())) {
-    edad--;
+/**
+ * Formatea un porcentaje
+ */
+export const formatearPorcentaje = (valor: number, decimales = 1): string => {
+  return `${valor.toFixed(decimales)}%`;
+};
+
+/**
+ * Trunca un texto a una longitud específica
+ */
+export const truncarTexto = (texto: string, longitud: number): string => {
+  if (texto.length <= longitud) {
+    return texto;
+  }
+  return `${texto.substring(0, longitud)}...`;
+};
+
+/**
+ * Capitaliza la primera letra de cada palabra
+ */
+export const capitalizarPalabras = (texto: string): string => {
+  return texto.replace(/\w\S*/g, (txt) => 
+    txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase()
+  );
+};
+
+/**
+ * Valida y formatea un email
+ */
+export const formatearEmail = (email: string): string => {
+  return email.toLowerCase().trim();
+};
+
+/**
+ * Formatea una dirección
+ */
+export const formatearDireccion = (direccion: {
+  calle: string;
+  numero: string;
+  comuna: string;
+  ciudad: string;
+}): string => {
+  const { calle, numero, comuna, ciudad } = direccion;
+  return `${calle} ${numero}, ${comuna}, ${ciudad}`;
+};
+
+/**
+ * Formatea duración en minutos a texto legible
+ */
+export const formatearDuracion = (minutos: number): string => {
+  if (minutos < 60) {
+    return `${minutos} minutos`;
   }
   
-  return edad;
+  const horas = Math.floor(minutos / 60);
+  const minutosRestantes = minutos % 60;
+  
+  if (minutosRestantes === 0) {
+    return `${horas} ${horas === 1 ? 'hora' : 'horas'}`;
+  }
+  
+  return `${horas} ${horas === 1 ? 'hora' : 'horas'} y ${minutosRestantes} minutos`;
 };
 
-// Generar colores para avatar basado en nombre
-export const generarColorAvatar = (nombre: string): string => {
-  const colores = [
-    'bg-pink-500', 'bg-blue-500', 'bg-green-500', 
-    'bg-yellow-500', 'bg-purple-500', 'bg-indigo-500',
-    'bg-red-500', 'bg-teal-500'
-  ];
+/**
+ * Formatea un tamaño de archivo
+ */
+export const formatearTamanoArchivo = (bytes: number): string => {
+  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+  if (bytes === 0) return '0 Bytes';
   
-  const indice = nombre.charCodeAt(0) % colores.length;
-  return colores[indice];
+  const i = Math.floor(Math.log(bytes) / Math.log(1024));
+  const size = bytes / Math.pow(1024, i);
+  
+  return `${size.toFixed(1)} ${sizes[i]}`;
 }; 

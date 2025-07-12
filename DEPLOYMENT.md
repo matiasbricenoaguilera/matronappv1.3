@@ -21,12 +21,12 @@ Ve a tu repositorio en GitHub → **Settings** → **Secrets and variables** →
 Agrega estos secrets:
 
 ```
-FTP_SERVER=ftp.tudominio.com
-FTP_USERNAME=tu_usuario_cpanel
-FTP_PASSWORD=tu_password_cpanel
+FTP_SERVER=ftp.cuiden.cl
+FTP_USERNAME=tu_usuario_cpanelmatronapp@cuiden.cl
+FTP_PASSWORD=Mimisu-4062636263
 FTP_SERVER_DIR=public_html/
-REACT_APP_API_URL=https://tudominio.com/api
-SITE_URL=tudominio.com
+REACT_APP_API_URL=https://cuiden.cl/api
+SITE_URL=cuiden.cl
 ```
 
 ### **Paso 2: Configurar Base de Datos en cPanel**
@@ -333,3 +333,87 @@ Si tienes problemas:
 ---
 
 **🎉 ¡Felicitaciones! MatronApp está desplegada y lista para usar.** 
+
+---
+
+## 🟢 **PASOS PARA CONFIGURAR LA BASE DE DATOS EN CPANEL**
+
+### 1. **Accede a cPanel**
+- Ingresa a tu cPanel con tu usuario y contraseña.
+
+---
+
+### 2. **Ve a la sección “Bases de datos MySQL”**
+- Busca el ícono o la opción que dice **“MySQL Databases”** o **“Bases de datos MySQL”**.
+
+---
+
+### 3. **Crea una nueva base de datos**
+- En el campo **“Create New Database”** o **“Crear nueva base de datos”**, escribe el nombre, por ejemplo:  
+  ```
+  matronapp_db
+  ```
+- Haz clic en **“Create Database”**.
+
+---
+
+### 4. **Crea un usuario para la base de datos**
+- Baja a la sección **“Add New User”** o **“Agregar nuevo usuario”**.
+- Escribe un nombre de usuario, por ejemplo:  
+  ```
+  matronapp_user
+  ```
+- Escribe una contraseña segura (guárdala bien).
+- Haz clic en **“Create User”**.
+
+---
+
+### 5. **Asigna el usuario a la base de datos**
+- Baja a la sección **“Add User to Database”**.
+- Selecciona el usuario y la base de datos que creaste.
+- Haz clic en **“Add”**.
+- En la siguiente pantalla, marca **“ALL PRIVILEGES”** (Todos los privilegios).
+- Haz clic en **“Make Changes”** o **“Hacer cambios”**.
+
+---
+
+### 6. **Guarda los datos de conexión**
+- **Nombre de la base de datos:**  
+  Suele ser algo como `tuprefijo_matronapp_db`
+- **Usuario de la base de datos:**  
+  Suele ser algo como `tuprefijo_matronapp_user`
+- **Contraseña:**  
+  La que creaste
+- **Host:**  
+  Normalmente es `localhost`
+
+---
+
+### 7. **Configura las variables de entorno en tu hosting**
+Crea o edita el archivo `.env` en tu servidor (o en el backend PHP) con estos datos:
+
+```
+<code_block_to_apply_changes_from>
+DB_HOST=localhost
+DB_NAME=tuprefijo_matronapp_db
+DB_USER=tuprefijo_matronapp_user
+DB_PASSWORD=tu_contraseña
+JWT_SECRET=tu_clave_secreta
+```
+
+---
+
+### 8. **Carga las tablas (opcional)**
+- Si tu backend tiene un script para crear las tablas, ejecútalo.
+- O usa **phpMyAdmin** (en cPanel) para importar el script SQL que te proporcioné antes.
+
+---
+
+## 📝 **¿Qué sigue?**
+- Cuando tu backend PHP se conecte, usará estos datos.
+- Si tienes dudas con el nombre exacto de la base de datos o usuario, revisa la lista de bases de datos y usuarios en cPanel: siempre llevan el prefijo de tu cuenta.
+
+---
+
+¿Quieres que te ayude con el script SQL para crear las tablas, o tienes dudas en algún paso?  
+¿Necesitas ayuda para editar el archivo `.env` en tu hosting? 

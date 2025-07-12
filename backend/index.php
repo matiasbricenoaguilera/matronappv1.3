@@ -4,6 +4,80 @@ header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
 header('Content-Type: application/json; charset=utf-8');
 
+// Cargar variables de entorno
+function loadEnv($path) {
+    if (!file_exists($path)) {
+        return false;
+    }
+    
+    $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        if (strpos($line, '#') === 0) continue; // Comentarios
+        if (empty(trim($line))) continue; // Líneas vacías
+        
+        if (strpos($line, '=') !== false) {
+            list($name, $value) = explode('=', $line, 2);
+            $name = trim($name);
+            $value = trim($value);
+            
+            // Remover comillas si existen
+            if (preg_match('/^(["\'])(.*)\1$/', $value, $matches)) {
+                $value = $matches[2];
+            }
+            
+            $_ENV[$name] = $value;
+            putenv("$name=$value");
+        }
+    }
+    return true;
+}
+
+// Intentar cargar .env desde diferentes ubicaciones
+$envLoaded = false;
+$possiblePaths = [
+    __DIR__ . '/../.env',           // Un nivel arriba (raíz del proyecto)
+    __DIR__ . '/../env.production', // Archivo de producción
+    __DIR__ . '/../../.env',        // Dos niveles arriba
+    __DIR__ . '/../../../.env',     // Tres niveles arriba
+    __DIR__ . '/.env'               // En el directorio backend
+];
+
+foreach ($possiblePaths as $path) {
+    if (loadEnv($path)) {
+        $envLoaded = true;
+        error_log("MatronApp: Variables de entorno cargadas desde: $path");
+        break;
+    }
+}
+
+// Si no se encontró .env, usar valores por defecto
+if (!$envLoaded) {
+    error_log("MatronApp: No se encontró archivo .env, usando valores por defecto");
+    
+    // Variables de base de datos
+    $_ENV['DB_HOST'] = $_ENV['DB_HOST'] ?? 'localhost';
+    $_ENV['DB_NAME'] = $_ENV['DB_NAME'] ?? 'matronapp_db';
+    $_ENV['DB_USER'] = $_ENV['DB_USER'] ?? 'matronapp_user';
+    $_ENV['DB_PASSWORD'] = $_ENV['DB_PASSWORD'] ?? '';
+    $_ENV['CPANEL_PREFIX'] = $_ENV['CPANEL_PREFIX'] ?? '';
+    
+    // JWT
+    $_ENV['JWT_SECRET'] = $_ENV['JWT_SECRET'] ?? 'matronapp_secret_key_2024';
+    
+    // API
+    $_ENV['REACT_APP_API_URL'] = $_ENV['REACT_APP_API_URL'] ?? 'https://cuiden.cl/api';
+    $_ENV['REACT_APP_ENVIRONMENT'] = $_ENV['REACT_APP_ENVIRONMENT'] ?? 'production';
+    
+    // Configuración adicional
+    $_ENV['APP_DEBUG'] = $_ENV['APP_DEBUG'] ?? 'false';
+    $_ENV['APP_TIMEZONE'] = $_ENV['APP_TIMEZONE'] ?? 'America/Santiago';
+    $_ENV['UPLOAD_MAX_SIZE'] = $_ENV['UPLOAD_MAX_SIZE'] ?? '10485760';
+    $_ENV['SESSION_LIFETIME'] = $_ENV['SESSION_LIFETIME'] ?? '1440';
+}
+
+// Configurar zona horaria
+date_default_timezone_set($_ENV['APP_TIMEZONE'] ?? 'America/Santiago');
+
 // Manejar preflight requests
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);

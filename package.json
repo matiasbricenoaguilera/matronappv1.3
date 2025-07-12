@@ -30,7 +30,12 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "build:production": "REACT_APP_ENVIRONMENT=production npm run build",
+    "deploy:manual": "npm run build && echo 'Build completado. Sube la carpeta build/ a tu cPanel'",
+    "analyze": "npm run build && npx serve -s build",
+    "check-build": "npm run build && ls -la build/",
+    "test:coverage": "npm test -- --coverage --watchAll=false"
   },
   "eslintConfig": {
     "extends": [

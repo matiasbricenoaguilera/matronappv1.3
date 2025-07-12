@@ -20,7 +20,7 @@ export const CuestionarioPage: React.FC = () => {
   // Datos de renovación si viene desde nueva receta
   const esRenovacion = location.state?.renovacion;
   const recetaAnterior = location.state?.recetaAnterior;
-  
+
   // Mensaje de bienvenida si viene del registro
   const successMessage = location.state?.message;
 

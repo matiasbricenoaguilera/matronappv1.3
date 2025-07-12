@@ -37,11 +37,11 @@ export const RegistroPage: React.FC = () => {
       const success = await register(registroData);
       
       if (success) {
-        // Redirigir al cuestionario médico
-        navigate('/cuestionario', { 
-          replace: true,
-          state: { message: '¡Cuenta creada exitosamente! Ahora completa tu perfil médico.' }
-        });
+      // Redirigir al cuestionario médico
+      navigate('/cuestionario', { 
+        replace: true,
+        state: { message: '¡Cuenta creada exitosamente! Ahora completa tu perfil médico.' }
+      });
       } else {
         setError('Error al crear la cuenta. Inténtalo nuevamente.');
       }

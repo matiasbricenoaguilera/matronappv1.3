@@ -19,8 +19,8 @@ export const LoginPage: React.FC = () => {
       const success = await login(data);
       
       if (success) {
-        // Redirigir al dashboard o página principal
-        navigate('/dashboard', { replace: true });
+      // Redirigir al dashboard o página principal
+      navigate('/dashboard', { replace: true });
       } else {
         setError('Email o contraseña incorrectos');
       }

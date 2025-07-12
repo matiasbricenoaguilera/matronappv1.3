@@ -40,7 +40,7 @@ export const formatearFechaCompleta = (fecha: Date): string => {
  */
 export const formatearTiempoTranscurrido = (fecha: Date): string => {
   return formatDistanceToNow(fecha, { 
-    addSuffix: true,
+    addSuffix: true, 
     locale: es 
   });
 };
@@ -74,7 +74,7 @@ export const formatearTelefono = (telefono: string): string => {
     const number = cleanPhone.substring(3);
     if (number.length === 9) {
       return `+56 ${number.substring(0, 1)} ${number.substring(1, 5)} ${number.substring(5)}`;
-    }
+  }
   }
   
   // Si no tiene formato internacional, asumimos que es nacional

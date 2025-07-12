@@ -1,0 +1,167 @@
+name: 🚀 Deploy MatronApp to cPanel
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+    types: [closed]
+
+jobs:
+  # Job para testing (opcional pero recomendado)
+  test:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      
+    - name: 🟢 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: 📦 Install dependencies
+      run: npm ci
+      
+    - name: 🧪 Run tests
+      run: npm test -- --coverage --watchAll=false
+      
+    - name: 🔍 TypeScript check
+      run: npm run build --dry-run || npm run build
+
+  # Job principal de despliegue
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      
+    - name: 🟢 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: 📦 Install dependencies
+      run: npm ci
+      
+    - name: 🔨 Build React app
+      run: npm run build
+      env:
+        REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
+        REACT_APP_ENVIRONMENT: production
+        CI: false
+        
+    - name: 🗂️ Create backend structure
+      run: |
+        echo "📁 Creando estructura del backend..."
+        mkdir -p build/api
+        mkdir -p build/api/config
+        mkdir -p build/api/controllers
+        mkdir -p build/api/models
+        mkdir -p build/api/utils
+        
+        # Copiar backend si existe
+        if [ -d "backend" ]; then
+          cp -r backend/* build/api/
+        fi
+        
+        # Crear .htaccess para el frontend
+        cat > build/.htaccess << 'EOF'
+        Options -MultiViews
+        RewriteEngine On
+        
+        # Permitir acceso a archivos estáticos
+        RewriteCond %{REQUEST_FILENAME} -f
+        RewriteRule ^ - [L]
+        
+        # Redirigir API calls al backend
+        RewriteCond %{REQUEST_URI} ^/api/
+        RewriteRule ^api/(.*)$ api/index.php [QSA,L]
+        
+        # Redirigir todo lo demás al React app
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteCond %{REQUEST_FILENAME} !-d
+        RewriteRule ^ index.html [QSA,L]
+        
+        # Headers de seguridad
+        Header always set X-Frame-Options "SAMEORIGIN"
+        Header always set X-Content-Type-Options "nosniff"
+        Header always set X-XSS-Protection "1; mode=block"
+        
+        # Caché para archivos estáticos
+        <IfModule mod_expires.c>
+          ExpiresActive On
+          ExpiresByType text/css "access plus 1 year"
+          ExpiresByType application/javascript "access plus 1 year"
+          ExpiresByType image/png "access plus 1 year"
+          ExpiresByType image/jpg "access plus 1 year"
+          ExpiresByType image/jpeg "access plus 1 year"
+          ExpiresByType image/gif "access plus 1 year"
+          ExpiresByType image/svg+xml "access plus 1 year"
+        </IfModule>
+        EOF
+        
+    - name: 📋 Create deployment info
+      run: |
+        echo "📝 Creando información de despliegue..."
+        cat > build/deploy-info.json << EOF
+        {
+          "deployedAt": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+          "commit": "${{ github.sha }}",
+          "branch": "${{ github.ref_name }}",
+          "repository": "${{ github.repository }}",
+          "workflow": "${{ github.workflow }}",
+          "runNumber": "${{ github.run_number }}"
+        }
+        EOF
+        
+    - name: 🧹 Clean build directory
+      run: |
+        echo "🧹 Limpiando archivos innecesarios..."
+        # Remover archivos de desarrollo si existen
+        rm -f build/**/*.map
+        rm -f build/**/*.test.*
+        rm -f build/**/*.spec.*
+        
+    - name: 🚀 Deploy to cPanel
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./build/
+        server-dir: ${{ secrets.FTP_SERVER_DIR }}
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          **/src/**
+          **/public/**
+          **/*.md
+          **/.env*
+          **/package*.json
+          **/tsconfig.json
+          **/tailwind.config.js
+          **/postcss.config.js
+          
+    - name: 🔔 Notify deployment success
+      if: success()
+      run: |
+        echo "✅ ¡Despliegue exitoso!"
+        echo "🌐 Sitio web: https://${{ secrets.SITE_URL }}"
+        echo "📅 Fecha: $(date)"
+        echo "🔗 Commit: ${{ github.sha }}"
+        
+    - name: 🚨 Notify deployment failure
+      if: failure()
+      run: |
+        echo "❌ Error en el despliegue"
+        echo "🔍 Revisa los logs para más detalles"
+        echo "🔗 Commit: ${{ github.sha }}" 
